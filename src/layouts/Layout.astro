@@ -34,12 +34,18 @@ import Moon from '../components/Moon';
 						<li>Email</li>
 					</a>
 				</ul>
-				<button id='toggle-dark-theme-button' style='display: none;'
-					><Moon /></button
-				>
-				<button id='toggle-light-theme-button' style='display: none;'
-					><Sun /></button
-				>
+				<div class='flex items-center gap-x-5'>
+					<button
+						id='toggle-dark-theme-button'
+						class='transition-all'
+						style='opacity: 0;'><Moon /></button
+					>
+					<button
+						id='toggle-light-theme-button'
+						class='transition-all'
+						style='opacity: 0;'><Sun /></button
+					>
+				</div>
 			</div>
 		</nav>
 
@@ -67,12 +73,12 @@ import Moon from '../components/Moon';
 		if (themeAtMount && toggleLightThemeButton && toggleDarkThemeButton) {
 			if (themeAtMount === 'light') {
 				setLightMode();
+				toggleDarkThemeButton.style.opacity = '100';
 				toggleLightThemeButton.style.display = 'none';
-				toggleDarkThemeButton.style.display = 'initial';
 			} else {
 				setDarkMode();
+				toggleLightThemeButton.style.opacity = '100';
 				toggleDarkThemeButton.style.display = 'none';
-				toggleLightThemeButton.style.display = 'initial';
 			}
 		}
 	};
@@ -83,11 +89,13 @@ import Moon from '../components/Moon';
 			if (theme === 'light') {
 				setDarkMode();
 				toggleLightThemeButton.style.display = 'initial';
+				toggleLightThemeButton.style.opacity = '100';
 				toggleDarkThemeButton.style.display = 'none';
 			} else {
 				setLightMode();
-				toggleLightThemeButton.style.display = 'none';
 				toggleDarkThemeButton.style.display = 'initial';
+				toggleDarkThemeButton.style.opacity = '100';
+				toggleLightThemeButton.style.display = 'none';
 			}
 		}
 	};
