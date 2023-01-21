@@ -1,9 +1,6 @@
 ---
-export interface Props {
-	title: string;
-}
-
-const { title } = Astro.props;
+import Sun from '../components/Sun';
+import Moon from '../components/Moon';
 ---
 
 <!DOCTYPE html>
@@ -13,7 +10,7 @@ const { title } = Astro.props;
 		<meta name='viewport' content='width=device-width' />
 		<link rel='icon' type='image/svg+xml' href='/favicon.svg' />
 		<meta name='generator' content={Astro.generator} />
-		<title>{title}</title>
+		<title>jaxoco &#x2022; home</title>
 	</head>
 	<body
 		class='bg-neutral-50 dark:bg-zinc-800 dark:text-neutral-100 container max-w-3xl p-5 mx-auto'
@@ -22,7 +19,7 @@ const { title } = Astro.props;
 			<h1 class='text-2xl font-bold'>jaxoco</h1>
 		</header>
 		<nav class='flex flex-col mb-3'>
-			<div class='flex justify-between'>
+			<div class='flex justify-between items-center'>
 				<ul class='flex gap-x-3 text-indigo-500 font-semibold'>
 					<a href='/'>
 						<li>Home</li>
@@ -37,9 +34,15 @@ const { title } = Astro.props;
 						<li>Email</li>
 					</a>
 				</ul>
-				<button id='toggle-theme-button'>Toggle</button>
+				<button id='toggle-dark-theme-button' style='display: none;'
+					><Moon /></button
+				>
+				<button id='toggle-light-theme-button' style='display: none;'
+					><Sun /></button
+				>
 			</div>
 		</nav>
+
 		<slot />
 	</body>
 </html>
@@ -48,27 +51,44 @@ const { title } = Astro.props;
 	html {
 		font-family: system-ui, sans-serif;
 	}
-	code {
-		font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
-			DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
-	}
 </style>
 
 <script>
 	const html = document.getElementById('html');
-	const toggleThemeButton = document.getElementById('toggle-theme-button');
+	const toggleLightThemeButton = document.getElementById(
+		'toggle-light-theme-button'
+	);
+	const toggleDarkThemeButton = document.getElementById(
+		'toggle-dark-theme-button'
+	);
 	const themeAtMount = localStorage.getItem('theme');
 
 	const themeMount = () => {
-		if (themeAtMount) {
-			themeAtMount === 'light' ? setLightMode() : setDarkMode();
+		if (themeAtMount && toggleLightThemeButton && toggleDarkThemeButton) {
+			if (themeAtMount === 'light') {
+				setLightMode();
+				toggleLightThemeButton.style.display = 'none';
+				toggleDarkThemeButton.style.display = 'initial';
+			} else {
+				setDarkMode();
+				toggleDarkThemeButton.style.display = 'none';
+				toggleLightThemeButton.style.display = 'initial';
+			}
 		}
 	};
 
 	const switchTheme = () => {
 		const theme = localStorage.getItem('theme');
-		if (theme) {
-			theme === 'light' ? setDarkMode() : setLightMode();
+		if (theme && toggleLightThemeButton && toggleDarkThemeButton) {
+			if (theme === 'light') {
+				setDarkMode();
+				toggleLightThemeButton.style.display = 'initial';
+				toggleDarkThemeButton.style.display = 'none';
+			} else {
+				setLightMode();
+				toggleLightThemeButton.style.display = 'none';
+				toggleDarkThemeButton.style.display = 'initial';
+			}
 		}
 	};
 
@@ -94,7 +114,8 @@ const { title } = Astro.props;
 		}
 	};
 
-	if (toggleThemeButton) {
-		toggleThemeButton.addEventListener('click', toggleTheme);
+	if (toggleDarkThemeButton && toggleLightThemeButton) {
+		toggleDarkThemeButton.addEventListener('click', toggleTheme);
+		toggleLightThemeButton.addEventListener('click', toggleTheme);
 	}
 </script>
