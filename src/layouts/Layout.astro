@@ -1,0 +1,92 @@
+---
+export interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html id='html' lang='en'>
+	<head>
+		<meta charset='UTF-8' />
+		<meta name='viewport' content='width=device-width' />
+		<link rel='icon' type='image/svg+xml' href='/favicon.svg' />
+		<meta name='generator' content={Astro.generator} />
+		<title>{title}</title>
+	</head>
+	<body
+		class='bg-neutral-50 dark:bg-zinc-800 dark:text-neutral-100 container max-w-3xl p-5 mx-auto'
+	>
+		<header class='mb-3'>
+			<h1 class='text-2xl font-bold'>jaxoco</h1>
+		</header>
+		<nav class='flex flex-col mb-3'>
+			<div class='flex justify-between'>
+				<ul class='flex gap-x-3 text-indigo-500 font-semibold'>
+					<li>Home</li>
+					<li>Blog</li>
+					<li>GitHub</li>
+					<li>Email</li>
+				</ul>
+				<button id='toggle-theme-button'>Toggle</button>
+			</div>
+		</nav>
+		<slot />
+	</body>
+</html>
+
+<style is:global>
+	html {
+		font-family: system-ui, sans-serif;
+	}
+	code {
+		font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
+			DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+	}
+</style>
+
+<script>
+	const html = document.getElementById('html');
+	const toggleThemeButton = document.getElementById('toggle-theme-button');
+	const themeAtMount = localStorage.getItem('theme');
+
+	const themeMount = () => {
+		if (themeAtMount) {
+			themeAtMount === 'light' ? setLightMode() : setDarkMode();
+		}
+	};
+
+	const switchTheme = () => {
+		const theme = localStorage.getItem('theme');
+		if (theme) {
+			theme === 'light' ? setDarkMode() : setLightMode();
+		}
+	};
+
+	const setDarkMode = () => {
+		localStorage.setItem('theme', 'dark');
+		if (html) {
+			html.className = 'dark';
+		}
+	};
+
+	const setLightMode = () => {
+		localStorage.setItem('theme', 'light');
+		if (html) {
+			html.className = '';
+		}
+	};
+
+	themeMount();
+
+	const toggleTheme = () => {
+		if (html) {
+			switchTheme();
+		}
+	};
+
+	if (toggleThemeButton) {
+		toggleThemeButton.addEventListener('click', toggleTheme);
+	}
+</script>
