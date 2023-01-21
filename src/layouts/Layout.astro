@@ -67,10 +67,12 @@ import Moon from '../components/Moon';
 	const toggleDarkThemeButton = document.getElementById(
 		'toggle-dark-theme-button'
 	);
-	const themeAtMount = localStorage.getItem('theme');
+
+	let themeAtMount = localStorage.getItem('theme');
 
 	if (!themeAtMount) {
 		localStorage.setItem('theme', 'light');
+		themeAtMount = localStorage.getItem('theme');
 	}
 
 	const themeMount = () => {
